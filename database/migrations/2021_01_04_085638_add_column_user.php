@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployeeTaskTable extends Migration
+class AddColumnUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateEmployeeTaskTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_task', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('employee_id');
-            $table->bigInteger('task_id');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->bigInteger('role_id');
             $table->softDeletes();
         });
     }
@@ -29,6 +26,9 @@ class CreateEmployeeTaskTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_task');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role_id');
+            $table->dropColumn('deleted_at');
+        });
     }
 }
