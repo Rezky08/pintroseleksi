@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Task extends Model
 {
     use HasFactory, SoftDeletes;
-    public function employee_task()
+    public function employees()
     {
-        return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
+        return $this->belongsToMany(Employee::class, 'employee_task', 'task_id', 'id');
     }
 }

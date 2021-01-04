@@ -12,10 +12,11 @@ class EmployeeTask extends Model
     protected $table = 'employee_task';
     public function employee()
     {
-        return $this->belongsToMany(Employee::class, 'employee_task', 'employee_id', 'id');
+        return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
-    public function tasks()
+
+    public function task()
     {
-        return $this->belongsToMany(Task::class, 'employee_task', 'task_id', 'id');
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 }
