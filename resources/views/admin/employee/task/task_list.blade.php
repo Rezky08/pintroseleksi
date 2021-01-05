@@ -29,6 +29,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Status</th>
                 <th></th>
             </thead>
             <tbody>
@@ -37,6 +38,15 @@
                         <th>{{ $num_item++ }}</th>
                         <td>{{ $task->task_name }}</td>
                         <td>{{ $task->task_desc }}</td>
+                        <td>
+                            <div class="status-tag">
+                                @if ($task->pivot->is_completed)
+                                    <span class="tag is-success">Completed</span>
+                                @else
+                                    <span class="tag is-danger">Incompleted</span>
+                                @endif
+                            </div>
+                        </td>
                         <td>
                             <div class="buttons">
                                 <a href="{{ url('admin/employee/' . $employee->id . '/task/' . $task->pivot->id . '/edit') }}"

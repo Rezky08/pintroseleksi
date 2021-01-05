@@ -17,7 +17,15 @@ class Employee extends Model
     }
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id')->withPivot('id');
+        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id')->withPivot(['id', 'is_completed']);
+    }
+    public function tasksCompleted()
+    {
+        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id')->where('is_completed', true)->withPivot('id');
+    }
+    public function tasksIncompleted()
+    {
+        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id')->where('is_completed', false)->withPivot('id');
     }
     public function getEmployeeFullnameAttribute()
     {

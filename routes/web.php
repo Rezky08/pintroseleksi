@@ -65,6 +65,12 @@ Route::group(['middleware' => ['auth', 'auth.role:admin']], function () {
 });
 Route::group(['middleware' => ['auth', 'auth.role:employee']], function () {
     Route::group(['prefix' => 'dashboard'], function () {
-        Route::get('/', 'Admin\DashboardController@index');
+        Route::get('/', 'Employee\DashboardController@index');
+    });
+    Route::group(['prefix' => 'task'], function () {
+        Route::get('/', 'Employee\TaskController@index');
+        Route::group(['prefix' => '{t_id}', 'middleware' => ['validateId:employee_task,id,t_id']], function () {
+            Route::put('/', 'Employee\TaskController@update');
+        });
     });
 });
