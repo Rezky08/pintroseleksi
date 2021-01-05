@@ -11,6 +11,6 @@ class Task extends Model
     use HasFactory, SoftDeletes;
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'employee_task', 'task_id', 'id');
+        return $this->belongsToMany(Employee::class, 'employee_task', 'task_id', 'employee_id')->withPivot('id');
     }
 }

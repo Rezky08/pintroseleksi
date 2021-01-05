@@ -10,6 +10,7 @@ class EmployeeTask extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'employee_task';
+    protected $fillable = ['*'];
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'id');

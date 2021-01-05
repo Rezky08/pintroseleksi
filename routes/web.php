@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/dashboard');
 
 Route::group(['middleware' => 'auth.authed'], function () {
     Route::group(['prefix' => 'login'], function () {
@@ -23,6 +21,11 @@ Route::group(['middleware' => 'auth.authed'], function () {
         Route::post('/', 'LoginController@login')->name('login');
     });
 });
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/logout', 'LoginController@logout');
+});
+
 Route::group(['middleware' => ['auth', 'auth.role:admin']], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::get('/', 'Admin\DashboardController@index');
@@ -30,6 +33,33 @@ Route::group(['middleware' => ['auth', 'auth.role:admin']], function () {
             Route::get('/', 'Admin\EmployeeController@index');
             Route::get('/create', 'Admin\EmployeeController@create');
             Route::post('/create', 'Admin\EmployeeController@store');
+            Route::group(['prefix' => '{id}', 'middleware' => ['validateId:employees,id,id']], function () {
+                Route::get('/', 'Admin\EmployeeController@show');
+                Route::get('/edit', 'Admin\EmployeeController@edit');
+                Route::put('/edit', 'Admin\EmployeeController@update');
+                Route::delete('/', 'Admin\EmployeeController@destroy');
+                Route::group(['prefix' => 'task'], function () {
+                    Route::get('/', 'Admin\EmployeeTaskController@index');
+                    Route::get('/create', 'Admin\EmployeeTaskController@create');
+                    Route::post('/create', 'Admin\EmployeeTaskController@store');
+                    Route::group(['prefix' => '{t_id}', 'middleware' => ['validateId:employee_task,id,t_id']], function () {
+                        Route::delete('/', 'Admin\EmployeeTaskController@destroy');
+                        Route::get('/edit', 'Admin\EmployeeTaskController@edit');
+                        Route::put('/edit', 'Admin\EmployeeTaskController@update');
+                    });
+                });
+            });
+        });
+        Route::group(['prefix' => 'task'], function () {
+            Route::get('/', 'Admin\TaskController@index');
+            Route::get('/create', 'Admin\TaskController@create');
+            Route::post('/create', 'Admin\TaskController@store');
+            Route::group(['prefix' => '{id}', 'middleware' => ['validateId:tasks,id,id']], function () {
+                Route::get('/', 'Admin\TaskController@show');
+                Route::get('/edit', 'Admin\TaskController@edit');
+                Route::put('/edit', 'Admin\TaskController@update');
+                Route::delete('/', 'Admin\TaskController@destroy');
+            });
         });
     });
 });

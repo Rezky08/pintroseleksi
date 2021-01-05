@@ -2,26 +2,28 @@
 
 namespace App\Models;
 
+use App\Traits\TableColumn;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TableColumn;
+    protected $fillable = ['*'];
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'id');
+        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id')->withPivot('id');
     }
     public function getEmployeeFullnameAttribute()
     {
         return "{$this->employee_first_name} {$this->employee_last_name}";
     }
-    public function getGenderAttribute()
+    public function getGenderDetailAttribute()
     {
         if ($this->employee_gender == "M") {
             return "Male";

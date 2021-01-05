@@ -12,13 +12,13 @@
                             <form action="" method="post">
                                 @csrf
                                 <div class="field">
-                                    <label class="label">E-mail</label>
+                                    <label class="label">Username</label>
                                     <div class="control has-icons-left">
-                                        <input type="email" name="email" class="input" value="{{ old('email') }}">
+                                        <input type="text" name="username" class="input" value="{{ old('username') }}">
                                         <span class="icon is-small is-left has-text-primary">
                                             <i class="fas fa-envelope"></i>
                                         </span>
-                                        @error('email')
+                                        @error('username')
                                             <span class="help is-danger">{{ $message }}</span>
                                         @enderror
                                     </div>

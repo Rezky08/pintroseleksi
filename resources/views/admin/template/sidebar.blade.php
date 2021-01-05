@@ -18,7 +18,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('admin/dastask') }}">
+                <a href="{{ url('admin/task') }}">
                     <span class="icon">
                         <i class="fas fa-tasks"></i>
                     </span>
